@@ -99,6 +99,8 @@ GEM
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
     cliver (0.3.2)
+    codeclimate-test-reporter (0.6.0)
+      simplecov (>= 0.7.1, < 1.0.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     coffee-rails (4.1.1)
@@ -346,6 +348,7 @@ PLATFORMS
 DEPENDENCIES
   attr_encrypted
   byebug
+  codeclimate-test-reporter
   coffee-rails (~> 4.1.0)
   cucumber-rails
   cucumber-rails-training-wheels
@@ -386,4 +389,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.12.5
+   1.13.3
