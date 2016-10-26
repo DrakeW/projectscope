@@ -1,6 +1,10 @@
 When /^I have a valid github account with email "(.*)" username "(.*)"/ do |email, username|
-	OmniAuth.config.add_mock(:github, {
+	OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new(
+		{
 	    :uid => '12345',
+	    :info => {
+	    	:email => email
+	    },
 	    :extra => {
 	      :raw_info => {
 	      	:email => email,

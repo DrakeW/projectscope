@@ -61,6 +61,7 @@ And(/^I am logged in$/) do
     And I have a valid github account with email "test-coach@test.com" username "test-coach"
     And I follow "Sign in with GitHub"
   }
+  sleep(1)
 end
 
 Then(/^the config value "([^"]*)" should not appear in the page$/) do |value|
