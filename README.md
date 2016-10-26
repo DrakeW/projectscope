@@ -1,13 +1,14 @@
 Main Repo Status:
 
-<a href="https://codeclimate.com/github/AgileVentures/projectscope_mvp"><img src="https://codeclimate.com/github/AgileVentures/projectscope_mvp/badges/gpa.svg" /></a>
-<a href="https://travis-ci.org/AgileVentures/projectscope_mvp"><img src="https://travis-ci.org/AgileVentures/projectscope_mvp.svg?branch=master"></a>
+<a href="https://codeclimate.com/github/AgileVentures/projectscope"><img src="https://codeclimate.com/github/AgileVentures/projectscope/badges/gpa.svg" /></a>
+<a href="https://travis-ci.org/AgileVentures/projectscope"><img src="https://travis-ci.org/AgileVentures/projectscope.svg?branch=develop"></a>
 
 CS169 Group Forked Repo Status:
 
 <a href="https://codeclimate.com/github/DrakeW/projectscope"><img src="https://codeclimate.com/github/DrakeW/projectscope/badges/gpa.svg" /></a>
 <a href="https://travis-ci.org/DrakeW/projectscope"><img src="https://travis-ci.org/DrakeW/projectscope.svg?branch=develop"></a>
 <a href="https://codeclimate.com/github/DrakeW/projectscope/coverage"><img src="https://codeclimate.com/github/DrakeW/projectscope/badges/coverage.svg" /></a>
+
 # MVP dashboard for ProjectScope
 
 A dashboard to show project metrics such as those supported by gems like
@@ -51,7 +52,7 @@ or execute
 The file `config/application.yml.asc` is a symmetric-key-encrypted YAML
 file that itself contains the encryption keys for encrypting sensitive
 database attributes at rest.  It is safe to version this file.  The secrets
-in this file are managed [as described in this article.](saasbook.blogspot.com/2016/08/keeping-secrets.html)
+in this file are managed [as described in this article.](http://saasbook.blogspot.com/2016/08/keeping-secrets.html)
 
 # Creating new metric gems
 
