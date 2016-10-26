@@ -57,9 +57,9 @@ end
 
 And(/^I am logged in$/) do
   steps %Q{
-    Given admin with email "test-admin@test.com" and password "testadminofprojectscope" exists
     Given I am on the login page
-    When I sign in as admin with email "test-admin@test.com" and password "testadminofprojectscope"
+    And I have a valid github account with email "test-coach@test.com" username "test-coach"
+    And I follow "Sign in with GitHub"
   }
 end
 

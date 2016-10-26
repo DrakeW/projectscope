@@ -62,10 +62,10 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 World(FactoryGirl::Syntax::Methods)
 
 # for cucumber omniauth test
-Before('@omniauth_test') do
+Before('@omniauth') do
   OmniAuth.config.test_mode = true
 end
 
-After('@omniauth_test') do
+After('@omniauth') do
   OmniAuth.config.test_mode = false
 end
