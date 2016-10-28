@@ -6,11 +6,14 @@
 #  name       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  user_id    :integer
 #
 
 class Project < ActiveRecord::Base
   has_many :configs
   has_many :metric_samples
+
+  belongs_to :user
 
   validates :name, :presence => true, :uniqueness => true
 
