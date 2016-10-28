@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   def update_preference
   	@selected_projects = Project.where(:id => params[:projects].try(:keys))
   	@selected_metrics = params[:metrics].keys
-  	current_user.preferred_projects = @selected_projects unless @selected_projects.nil?
+  	current_user.preferred_projects = @selected_projects
   	current_user.preferred_metrics = @selected_metrics
   	if current_user.save
   		flash[:notice] = "Preference saved successfully."
