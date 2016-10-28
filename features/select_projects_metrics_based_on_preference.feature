@@ -28,6 +28,7 @@ Scenario: select preferred projects
 	And I should see "WebsiteOne"
     When I follow "Preference"
     And I check "LocalSupport" within "#project-preference-list"
+    And I uncheck "WebsiteOne" within "#project-preference-list"
     And I press "Save"
     Then I should see "Preference saved successfully"
     When I go to the projects page
@@ -40,14 +41,15 @@ Scenario: select preferred metrics
 	Then I should see "2.9" within "#LocalSupport_code_climate_metric"
 	And I should see "0.6" within "#WebsiteOne_github_metric"
 	When I follow "Preference"
-	And I check "code_climate" within "#metric-preference-list"
+	And I check "CodeClimate" within "#metric-preference-list"
+	And I uncheck "Github" within "#metric-preference-list"
 	And I press "Save"
 	Then I should see "Preference saved successfully"
 	When I go to the projects page
 	Then I should see "2.9" within "#LocalSupport_code_climate_metric"
 	And I should see "3.4" within "#WebsiteOne_code_climate_metric"
-	And I should not see "0.7" within "#LocalSupport_github_metric"
-	And I should not see "0.6" within "#WebsiteOne_github_metric"
+	And I should not see "0.7"
+	And I should not see "0.6"
 
 
 Scenario: select both projects and metrics
@@ -56,11 +58,13 @@ Scenario: select both projects and metrics
 	And I should see "0.6" within "#WebsiteOne_github_metric"
 	When I follow "Preference"
 	And I check "LocalSupport" within "#project-preference-list"
-	And I check "code_climate" within "#metric-preference-list"
+	And I uncheck "WebsiteOne" within "#project-preference-list"
+	And I check "CodeClimate" within "#metric-preference-list"
+	And I uncheck "Github" within "#metric-preference-list"
 	And I press "Save"
 	Then I should see "Preference saved successfully"
 	When I go to the projects page
 	Then I should see "2.9" within "#LocalSupport_code_climate_metric"
-	And I should not see "3.4" within "#WebsiteOne_code_climate_metric"
-	And I should not see "0.7" within "#LocalSupport_github_metric"
-	And I should not see "0.6" within "#WebsiteOne_github_metric"
+	And I should not see "3.4"
+	And I should not see "0.7"
+	And I should not see "0.6"
