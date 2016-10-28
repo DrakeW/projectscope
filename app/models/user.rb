@@ -58,6 +58,8 @@ class User < ActiveRecord::Base
   private
 
   def set_default_preferred_metrics
-    self.preferred_metrics = ProjectMetrics.metric_names if self.preferred_metrics.empty?
+    unless self.try(:preferred_metrics).nil? || self.preferred_metrics.length > 0
+      self.preferred_metrics = ProjectMetrics.metric_names 
+    end
   end
 end
