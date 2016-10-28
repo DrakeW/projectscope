@@ -1,0 +1,66 @@
+@omniauth
+Feature: Select Projects and Metrics based on user preference
+	As a user, I would like to see only projects and metrics
+	that I'm interested in.
+
+Background:
+    Given I am logged in
+    And the following projects exist:
+      | name         |
+      | LocalSupport |
+      | WebsiteOne   |
+    And they have the following metric configs:
+      | project      | metric_name  | key | value                                         |
+      | LocalSupport | code_climate | url | https://github.com/AgileVentures/LocalSupport |
+      | WebsiteOne   | code_climate | url | https://github.com/AgileVentures/WebsiteOne   |
+      | LocalSupport | github       | url | https://github.com/AgileVentures/LocalSupport |
+      | WebsiteOne   | github       | url | https://github.com/AgileVentures/WebsiteOne   |
+    And they have the following metric samples:
+      | project      | metric_name  | score |
+      | LocalSupport | code_climate | 2.9   |
+      | WebsiteOne   | code_climate | 3.4   |
+      | LocalSupport | github       | 0.7   |
+      | WebsiteOne   | github       | 0.6   |
+
+Scenario: select preferred projects
+	When I am on the projects page
+	Then I should see "LocalSupport"
+	And I should see "WebsiteOne"
+    When I follow "Preference"
+    And I check "LocalSupport" within "#project-preference-list"
+    And I press "Save"
+    Then I should see "Preference saved successfully"
+    When I go to the projects page
+    Then I should see "LocalSupport"
+    And I should not see "WebsiteOne"
+
+
+Scenario: select preferred metrics
+	When I am on the projects page
+	Then I should see "2.9" within "#LocalSupport_code_climate_metric"
+	And I should see "0.6" within "#WebsiteOne_github_metric"
+	When I follow "Preference"
+	And I check "code_climate" within "#metric-preference-list"
+	And I press "Save"
+	Then I should see "Preference saved successfully"
+	When I go to the projects page
+	Then I should see "2.9" within "#LocalSupport_code_climate_metric"
+	And I should see "3.4" within "#WebsiteOne_code_climate_metric"
+	And I should not see "0.7" within "#LocalSupport_github_metric"
+	And I should not see "0.6" within "#WebsiteOne_github_metric"
+
+
+Scenario: select both projects and metrics
+	When I am on the projects page
+	Then I should see "2.9" within "#LocalSupport_code_climate_metric"
+	And I should see "0.6" within "#WebsiteOne_github_metric"
+	When I follow "Preference"
+	And I check "LocalSupport" within "#project-preference-list"
+	And I check "code_climate" within "#metric-preference-list"
+	And I press "Save"
+	Then I should see "Preference saved successfully"
+	When I go to the projects page
+	Then I should see "2.9" within "#LocalSupport_code_climate_metric"
+	And I should not see "3.4" within "#WebsiteOne_code_climate_metric"
+	And I should not see "0.7" within "#LocalSupport_github_metric"
+	And I should not see "0.6" within "#WebsiteOne_github_metric"
