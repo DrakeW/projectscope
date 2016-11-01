@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
 
   serialize :preferred_metrics, Array
 
-  has_many :preferred_projects, :foreign_key => "user_id", :class_name => "Project"
+  has_and_belongs_to_many :preferred_projects, :foreign_key => "user_id", :class_name => "Project"
 
   after_initialize :set_default_preferred_metrics
 

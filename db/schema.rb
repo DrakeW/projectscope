@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161028063544) do
+ActiveRecord::Schema.define(version: 20161101210440) do
 
   create_table "configs", force: :cascade do |t|
     t.integer  "project_id"
@@ -46,6 +46,14 @@ ActiveRecord::Schema.define(version: 20161028063544) do
   end
 
   add_index "projects", ["name"], name: "index_projects_on_name"
+
+  create_table "projects_users", id: false, force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "user_id"
+  end
+
+  add_index "projects_users", ["project_id"], name: "index_projects_users_on_project_id"
+  add_index "projects_users", ["user_id"], name: "index_projects_users_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "provider_username",      default: "",      null: false
