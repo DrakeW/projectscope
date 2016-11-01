@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   	@preferred_metrics = @user.preferred_metrics
   end
 
-  def update_preference
+  def update
   	@selected_projects = Project.where(:id => params[:projects].try(:keys))
   	@selected_metrics = params[:metrics].keys
   	current_user.preferred_projects = @selected_projects

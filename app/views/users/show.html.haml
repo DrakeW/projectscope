@@ -1,5 +1,5 @@
 %h1 Preference Settings
-= form_tag update_preference_user_path, :method => :post do
+= form_tag user_path, :method => :put do
 	%div#project-preference-list
 		%h4 Check projects to monitor:
 		- @all_projects.each do |project|
