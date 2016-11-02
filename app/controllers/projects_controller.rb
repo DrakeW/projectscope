@@ -8,9 +8,9 @@ class ProjectsController < ApplicationController
   def index
     @metric_names = ProjectMetrics.metric_names
     @projects = Project.all
-    if(params[:type] == "project_name")
+    if params[:type] == "project_name"
       order_by_project_name
-    elsif(!params[:type].nil?)
+    elsif !params[:type].nil?
       order_by_metric_name
     end
   end
@@ -97,38 +97,19 @@ class ProjectsController < ApplicationController
   
   private
   def order_by_project_name
-    if session[:pre_click] == "project_name"
-      if session[:order] == "ASC"
-        @projects = Project.order(name: :desc)
-      else
-        @projects = Project.order(:name)
-      end
-    else    
-      @projects = Project.order(:name)  
-    end
+    @projects = session[:pre_click] == "project_name" ? Project.order("name #{session[:order]}").reverse : Project.order(:name)
     change
   end
   
   def order_by_metric_name 
     click_type = params[:type]
-    if session[:pre_click] == click_type
-      if session[:order] == "ASC"
-        @projects = Project.joins(:metric_samples).where("metric_samples.metric_name = ?", click_type).order("metric_samples.score")
-      else
-        @projects = Project.joins(:metric_samples).where("metric_samples.metric_name = ?", click_type).order("metric_samples.score").reverse
-      end
-    else
-      @projects = Project.joins(:metric_samples).where("metric_samples.metric_name = ?", click_type).order("metric_samples.score")
-    end 
+    @projects = session[:pre_click] == click_type ? Project.joins(:metric_samples).where("metric_samples.metric_name = ?", click_type).order("metric_samples.score #{session[:order]}").reverse
+    : @projects = Project.joins(:metric_samples).where("metric_samples.metric_name = ?", click_type).order("metric_samples.score")
     change
   end
   
   def change
-    if session[:order] == "ASC"
-      session[:order] = "DESC"
-    else
-      session[:order] = "ASC"
-    end
+    session[:order] = session[:order] == "ASC" ? "DESC" : "ASC"
     session[:pre_click] = params[:type]
   end
 end
