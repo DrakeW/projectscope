@@ -76,3 +76,27 @@ Given(/^the date is "([^"]*)"$/) do |date|
   new_time = Time.utc(year, month,day, 12, 0, 0)
   Timecop.travel(new_time)
 end
+
+When /^I drag (.*) (\d) row (up|down)$/ do |project, number, order|
+  id = page.find('tr', text: project)[:id]
+  sign = if order == 'down' then '' else '-' end
+  code = %Q{
+    $("#{id}").simulateDragSortable({move: #{sign}#{number}});
+  }
+  page.execute_script(code)
+end
+
+Then(/^I should see (.*) (above|below) (.*)$/) do |thing0, order, thing1|
+  pj_names = page.all('table#projects_table')
+  puts pj_names
+  # t = page.find('table', id: 'projects_table')
+  # puts t.text
+  # t.table.each do |elm|
+  #   puts elm
+  # end
+  # if order == "above"
+  #   page.text.should match("#{thing0}.*#{thing1}")
+  # else
+  #   page.text.should match("#{thing1}.*#{thing0}")
+  # end
+end
