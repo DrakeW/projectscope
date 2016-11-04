@@ -6,11 +6,12 @@ class ProjectsController < ApplicationController
   # GET /projects.json
 
   def index
-    @metric_names = ProjectMetrics.metric_names
-    if params[:type].nil?
-      @projects = Project.all
+    @metric_names = current_user.preferred_metrics
+    preferred_projects = current_user.preferred_projects.empty? ? Project.all : current_user.preferred_projects
+    if params[:type].nil? or params[:type] == "project_name"
+      @projects = order_by_project_name preferred_projects
     else
-      @projects = params[:type] == "project_name" ? order_by_project_name : order_by_metric_name
+      @projects = order_by_metric_name preferred_projects
     end
     update_session
   end
@@ -97,13 +98,15 @@ class ProjectsController < ApplicationController
   
   private
 
-  def order_by_project_name
-    session[:pre_click] == "project_name" ? Project.order_by_name.reorder("name #{session[:order]}").reverse : Project.order_by_name
+  def order_by_project_name preferred_projects
+    session[:order] = "ASC" if session[:pre_click] != "project_name"
+    preferred_projects.order_by_name(session[:order])
   end
   
-  def order_by_metric_name
+  def order_by_metric_name preferred_projects
     click_type = params[:type]
-    session[:pre_click] == click_type ? Project.order_by_metric_score(click_type).reorder("metric_samples.score #{session[:order]}").reverse : Project.order_by_metric_score(click_type)
+    session[:order] = "ASC" if session[:pre_click] != click_type 
+    preferred_projects.order_by_metric_score(click_type, session[:order])
   end
   
   def update_session

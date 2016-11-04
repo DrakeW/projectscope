@@ -6,21 +6,24 @@
 #  name       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  user_id    :integer
 #
 
 class Project < ActiveRecord::Base
   has_many :configs
   has_many :metric_samples
 
+  has_and_belongs_to_many :users
+
   validates :name, :presence => true, :uniqueness => true
 
   accepts_nested_attributes_for :configs
   attr_accessible :name, :configs_attributes
 
-  scope :order_by_metric_score, -> (metric_name) { 
+  scope :order_by_metric_score, -> (metric_name, order) { 
             joins(:metric_samples).where("metric_samples.metric_name = ?", metric_name)
-                                  .order("metric_samples.score") }
-  scope :order_by_name, -> { order(:name) }
+                                  .order("metric_samples.score #{order}") }
+  scope :order_by_name, -> (order) { order("name #{order}") }
 
   def config_for(metric)
     configs.where(:metric_name => metric).first || configs.build(:metric_name => metric)
