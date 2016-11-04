@@ -17,6 +17,11 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :configs
   attr_accessible :name, :configs_attributes
 
+  scope :order_by_metric_score, -> (metric_name) { 
+            joins(:metric_samples).where("metric_samples.metric_name = ?", metric_name)
+                                  .order("metric_samples.score") }
+  scope :order_by_name, -> { order(:name) }
+
   def config_for(metric)
     configs.where(:metric_name => metric).first || configs.build(:metric_name => metric)
   end

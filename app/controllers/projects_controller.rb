@@ -7,12 +7,12 @@ class ProjectsController < ApplicationController
 
   def index
     @metric_names = ProjectMetrics.metric_names
-    @projects = Project.all
-    if params[:type] == "project_name"
-      order_by_project_name
-    elsif !params[:type].nil?
-      order_by_metric_name
+    if params[:type].nil?
+      @projects = Project.all
+    else
+      @projects = params[:type] == "project_name" ? order_by_project_name : order_by_metric_name
     end
+    update_session
   end
 
   # GET /projects/1
@@ -96,19 +96,17 @@ class ProjectsController < ApplicationController
   end
   
   private
+
   def order_by_project_name
-    @projects = session[:pre_click] == "project_name" ? Project.order("name #{session[:order]}").reverse : Project.order(:name)
-    change
+    session[:pre_click] == "project_name" ? Project.order_by_name.reorder("name #{session[:order]}").reverse : Project.order_by_name
   end
   
-  def order_by_metric_name 
+  def order_by_metric_name
     click_type = params[:type]
-    @projects = session[:pre_click] == click_type ? Project.joins(:metric_samples).where("metric_samples.metric_name = ?", click_type).order("metric_samples.score #{session[:order]}").reverse
-    : @projects = Project.joins(:metric_samples).where("metric_samples.metric_name = ?", click_type).order("metric_samples.score")
-    change
+    session[:pre_click] == click_type ? Project.order_by_metric_score(click_type).reorder("metric_samples.score #{session[:order]}").reverse : Project.order_by_metric_score(click_type)
   end
   
-  def change
+  def update_session
     session[:order] = session[:order] == "ASC" ? "DESC" : "ASC"
     session[:pre_click] = params[:type]
   end
