@@ -68,6 +68,8 @@ class User < ActiveRecord::Base
   end
 
   def set_default_preferred_projects
-    self.preferred_projects = Project.all if self.preferred_projects.empty?
+    unless self.try(:preferred_projects).nil? || self.preferred_projects.length > 0
+      self.preferred_projects = Project.all 
+    end
   end
 end
