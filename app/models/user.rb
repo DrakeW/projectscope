@@ -59,6 +59,14 @@ class User < ActiveRecord::Base
   	self.role == ADMIN
   end
 
+  def add_preferred_project project
+    if self.preferred_projects.empty?
+      self.preferred_projects = Project.all
+    else
+      self.preferred_projects << project
+    end
+  end
+
   private
 
   def set_default_preferred_metrics
