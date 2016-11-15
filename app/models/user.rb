@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :preferred_projects, :foreign_key => "user_id", :class_name => "Project"
 
-  after_initialize :set_default_preferred_metrics
+  after_initialize :set_default_preferred_metrics, :set_default_preferred_projects
 
   ADMIN = "admin"
   COACH = "coach"
@@ -59,19 +59,15 @@ class User < ActiveRecord::Base
   	self.role == ADMIN
   end
 
-  def add_preferred_project project
-    if self.preferred_projects.empty?
-      self.preferred_projects = Project.all
-    else
-      self.preferred_projects << project
-    end
-  end
-
   private
 
   def set_default_preferred_metrics
     unless self.try(:preferred_metrics).nil? || self.preferred_metrics.length > 0
       self.preferred_metrics = ProjectMetrics.metric_names 
     end
+  end
+
+  def set_default_preferred_projects
+    self.preferred_projects = Project.all if self.preferred_projects.empty?
   end
 end
