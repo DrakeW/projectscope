@@ -30,9 +30,9 @@ class User < ActiveRecord::Base
 
   serialize :preferred_metrics, Array
 
-  has_and_belongs_to_many :preferred_projects, :foreign_key => "user_id", :class_name => "Project"
+  has_and_belongs_to_many :selected_projects, :foreign_key => "user_id", :class_name => "Project"
 
-  after_initialize :set_default_preferred_metrics, :set_default_preferred_projects
+  after_initialize :set_default_preferred_metrics
 
   ADMIN = "admin"
   COACH = "coach"
@@ -59,17 +59,20 @@ class User < ActiveRecord::Base
   	self.role == ADMIN
   end
 
+  def preferred_projects
+    self.selected_projects = Project.all if self.selected_projects.empty?
+    self.selected_projects
+  end
+
+  def preferred_projects= projects
+    self.selected_projects = projects
+  end
+
   private
 
   def set_default_preferred_metrics
     unless self.try(:preferred_metrics).nil? || self.preferred_metrics.length > 0
       self.preferred_metrics = ProjectMetrics.metric_names 
-    end
-  end
-
-  def set_default_preferred_projects
-    unless self.try(:preferred_projects).nil? || self.preferred_projects.length > 0
-      self.preferred_projects = Project.all 
     end
   end
 end
