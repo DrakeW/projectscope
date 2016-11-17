@@ -49,7 +49,7 @@ start_date.upto(end_date) do |date|
         ProjectMetrics.metric_names.each do |metric|
             MetricSample.create!(:metric_name => metric,
                                  :project_id => project.id,
-                                 :score => rand(4),
+                                 :score => rand(0.0..4.0).round(2),
                                  :image => dummies[metric][rand(3)],
                                  :created_at => date)
         end
