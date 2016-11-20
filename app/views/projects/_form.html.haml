@@ -24,7 +24,7 @@
         = text_field_tag field_name, val, :disabled => @readonly
         %br
       - unless @readonly
-        - if @project_metrics[name].respond_to?(:credentials)
+        - if @credentials_check[name]
           - @project_metrics[name].credentials.each do |cred|
             -unless @existed_configs[name].include?(cred)
               .field.new
