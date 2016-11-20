@@ -1,4 +1,7 @@
-
+:css
+  fieldset{
+    margin-top:14px;
+  }
 = form_for(setup_metric_configs(@project)) do |f|
   - if @project.errors.any?
     #error_explanation
@@ -19,24 +22,23 @@
       %legend= name.titleize
       = hidden_field_tag "project[configs_attributes][#{index}][metric_name]", name
       - cf.object.options.each_pair do |key,val|
-        - field_name = "project[configs_attributes][#{index}][options][#{key}]"
-        %label{:for => field_name}= "#{key}:"
-        = text_field_tag field_name, val, :disabled => @readonly
-        %br
+        .field.exist{:class => 'col-md-4', :align => "right"}
+          - field_name = "project[configs_attributes][#{index}][options][#{key}]"
+          %label{:for => field_name}= "#{key}* :"
+          = text_field_tag field_name, val, :disabled => @readonly
+          %br
       - unless @readonly
         - if @project_metrics[name].respond_to?(:credentials)
           - @project_metrics[name].credentials.each do |cred|
             -unless @existed_configs[name].include?(cred)
-              .field.new
-                = label_tag "project[configs_attributes][#{index}][new][]", "#{cred}", :id => nil, :class => 'newf'
-                \ :
-                = hidden_field_tag "project[configs_attributes][#{index}][new][]", "#{cred}", :id => nil, :class => 'newf'
+              .field.new{:class => 'col-md-4', :align => "right"}
+                = label_tag "project[configs_attributes][#{index}][new][]", "#{cred}* :", :id => nil, :class => 'newf' 
+                = hidden_field_tag "project[configs_attributes][#{index}][new][]", "#{cred}* :", :id => nil, :class => 'newf'
                 = text_field_tag "project[configs_attributes][#{index}][new][]", '', :id => "#{name}_#{cred}", :class => 'newf'
         - else
           = link_to 'Add new', '', :class => 'add'
-          .field.new
+          .field.new{:class => 'col-md-4', :align => "right"}
             = text_field_tag "project[configs_attributes][#{index}][new][]", '', :id => nil, :class => 'newf'
-            \ :
             = text_field_tag "project[configs_attributes][#{index}][new][]", '', :id => nil, :class => 'newf'
             %br
 
